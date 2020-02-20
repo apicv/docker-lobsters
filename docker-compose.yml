@@ -11,14 +11,16 @@ services:
     volumes:
       - ./lobsters_data:/var/lib/mysql
   lobsters:
-    image: utensils/lobsters:latest
+    entrypoint: ["/usr/local/bin/docker-entrypoint2.sh"]
+    image: chverma/lobsters:latest
+    user: "root"
     environment:
       - MARIADB_HOST=database
       - MARIADB_PORT=3306
       - MARIADB_PASSWORD=password
       - MARIADB_USER=root
       - LOBSTER_DATABASE=lobsters
-      - LOBSTER_SITE_NAME="Example News"
+      - LOBSTER_SITE_NAME=APICV News
       - RAILS_ENV=development
       - LOBSTER_HOSTNAME=localhost
       - VIRTUAL_HOST=localhost
@@ -27,5 +29,8 @@ services:
       - "3000:3000"
     links:
       - database:mariadb
-volumes:
-  lobsters_data:
+    volumes:
+      - ./src/lobsters:/lobsters
+      - ./src/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint2.sh
+      - ./src/config/database.yml:/lobsters/config/database.yml
+      - ./src/config/locales:/lobsters/config/locales
