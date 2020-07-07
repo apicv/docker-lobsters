@@ -2,29 +2,34 @@ version: '3'
 
 services:
   database:
-    image: mariadb
+    image: mariadb:latest
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=lobsters
-    ports:
-      - "3307:3306"
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
     volumes:
       - ./lobsters_data:/var/lib/mysql
   lobsters:
+    restart: always
     entrypoint: ["/usr/local/bin/docker-entrypoint2.sh"]
     image: chverma/lobsters:latest
     user: "root"
     environment:
-      - MARIADB_HOST=database
-      - MARIADB_PORT=3306
-      - MARIADB_PASSWORD=password
-      - MARIADB_USER=root
-      - LOBSTER_DATABASE=lobsters
-      - LOBSTER_SITE_NAME=APICV News
-      - RAILS_ENV=development
-      - LOBSTER_HOSTNAME=localhost
-      - VIRTUAL_HOST=localhost
-      - RAILS_MAX_THREADS=5
+      - MARIADB_HOST
+      - MARIADB_PORT
+      - MARIADB_PASSWORD
+      - MARIADB_USER
+      - LOBSTER_DATABASE
+      - LOBSTER_SITE_NAME
+      - RAILS_ENV
+      - LOBSTER_HOSTNAME
+      - VIRTUAL_HOST
+      - RAILS_MAX_THREADS
+      - SMTP_PASSWORD
+      - SMTP_ADDRESS
+      - SMTP_USERNAME
+      - SMTP_PORT
+      - SECRET_KEY_BASE
     ports:
       - "3000:3000"
     links:
@@ -34,3 +39,4 @@ services:
       - ./src/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint2.sh
       - ./src/config/database.yml:/lobsters/config/database.yml
       - ./src/config/locales:/lobsters/config/locales
+      - ./src/config/secrets.yml:/lobsters/config/secrets.yml
