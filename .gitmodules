@@ -1,0 +1,3 @@
+[submodule "src/lobsters"]
+	path = src/lobsters
+	url = https://github.com/apicv/lobsters
