@@ -15,11 +15,12 @@ apk add --no-cache --virtual .build-deps \
         linux-headers \
         mariadb-connector-c-dev \
         mariadb-dev \
+	ssmtp \
         sqlite-dev;
 
 apk add ruby-dev
 bundle install
-
+bundle exec gem install rake
 # Used for simple logging purposes.
 timestamp="date +\"%Y-%m-%d %H:%M:%S\""
 alias echo="echo \"$(eval $timestamp) -$@\""
@@ -33,23 +34,23 @@ echo "DB Version: ${db_version}"
 # Provision Database.
 if [ "$db_status" != "0" ]; then
   echo "Creating database."
-  rake db:create
+  bundle exec rake db:create
   echo "Loading schema."
-  rake db:schema:load
+  bundle exec rake db:schema:load
   echo "Migrating database."
-  rake db:migrate
+  bundle exec rake db:migrate
   echo "Seeding database."
-  rake db:seed
+  bundle exec rake db:seed
 elif [ "$db_version" = "Current version: 0" ]; then
   echo "Loading schema."
-  rake db:schema:load
+  bundle exec rake db:schema:load
   echo "Migrating database."
-  rake db:migrate
+  bundle exec rake db:migrate
   echo "Seeding database."
-  rake db:seed
+  bundle exec rake db:seed
 else
   echo "Migrating database."
-  rake db:migrate
+  bundle exec rake db:migrate
 fi
 
 # Set out SECRET_KEY
@@ -72,8 +73,8 @@ trap "echo 'Stopping Lobsters - pid: $pid'; kill -SIGTERM $pid" SIGINT SIGTERM
 # Run the cron job every 5 minutes
 while : ; do
   echo "Running cron jobs."
-  bundle exec ruby script/mail_new_activity.rb
-  bundle exec ruby script/post_to_twitter
+  bundle exec ruby /lobsters/script/mail_new_activity
+  #bundle exec ruby script/post_to_twitter
   sleep 300
 done &
 
