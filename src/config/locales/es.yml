@@ -1,7 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
+es:
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"
@@ -473,7 +473,7 @@ en:
       preview: "Previsualizar"
       submit: "Enviar una Historia"
       submitbutton: "Enviar"
-        show:
+    show:
       toggledragons: "&mdash; aquí están los dragones &mdash;"
   users:
     list:
