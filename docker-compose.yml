@@ -38,5 +38,5 @@ services:
       - ./src/lobsters:/lobsters
       - ./src/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint2.sh
       - ./src/config/database.yml:/lobsters/config/database.yml
-      - ./src/config/locales:/lobsters/config/locales
+      - ./src/config/locales/es.yml:/lobsters/config/locales/es.yml
       - ./src/config/secrets.yml:/lobsters/config/secrets.yml
